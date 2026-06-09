@@ -4,7 +4,9 @@ services:
     restart: unless-stopped
     container_name: redis-eitaa
     network_mode: "service:nginx-redis"
-    command: redis-server --bind 127.0.0.1 --protected-mode yes
+    volumes:
+    - redis-data:/data
+    - ./redis/redis-eitaa.conf:/etc/redis/redis.conf:ro
     healthcheck:
       test: ["CMD", "redis-cli", "SET", "test:$(date +%s)", "success"]
       interval: 2s
@@ -24,3 +26,6 @@ services:
       interval: 2s
       timeout: 3s
       retries: 5
+
+volumes:
+  redis-data:
