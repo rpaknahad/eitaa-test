@@ -1,3 +1,7 @@
 #!/bin/sh
 
-redis-cli -h localhost -p 9000 SET "test:$(date +%s)" "success" && echo 'Redis running' || echo 'Error in Redis'
+set -e
+
+set -a; . ./.env; set +a
+
+wget -O - -q --user ${REDIS_EXPORTER_BASIC_AUTH_USERNAME} --password ${REDIS_EXPORTER_BASIC_AUTH_PASSWORD} http://localhost:9100/metrics || echo 'Problem connecting to redis exporter'
