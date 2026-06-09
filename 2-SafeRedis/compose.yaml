@@ -5,19 +5,22 @@ services:
     container_name: redis-eitaa
     network_mode: "service:nginx-redis"
     command: redis-server --bind 127.0.0.1 --protected-mode yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 5
 
   nginx-redis:
     image: nginx:1.31.1-trixie
     restart: unless-stopped
-    # depends_on:
-    # - redis-eitaa
     container_name: nginx-redis
     volumes:
       - ./nginx/nginx-redis.conf:/etc/nginx/nginx.conf:ro
     ports:
     - "9000:9000"
-    # healthcheck:
-    #   test: ["CMD-SHELL", "redis http://127.0.0.1:9000 | grep -q -E '1|2' || exit 1"]
-    #   interval: 2s
-    #   timeout: 1s
-    #   retries: 3
+    healthcheck:
+      test: ["CMD", "pidof", "nginx"]
+      interval: 2s
+      timeout: 3s
+      retries: 5
