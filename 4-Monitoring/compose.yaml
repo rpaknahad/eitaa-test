@@ -12,13 +12,14 @@ services:
       REDIS_EXPORTER_BASIC_AUTH_PASSWORD: ${REDIS_EXPORTER_BASIC_AUTH_PASSWORD}
     volumes:
     - ./prometheus/prometheus.yml.template:/tmp/prometheus.yml.template:ro
+    - prometheus_data:/prometheus
     entrypoint: |
       sh -c '
         cat /tmp/prometheus.yml.template | \
           sed s/REDIS_EXPORTER_BASIC_AUTH_USERNAME/${REDIS_EXPORTER_BASIC_AUTH_USERNAME}/g | \
           sed s/REDIS_EXPORTER_BASIC_AUTH_PASSWORD/${REDIS_EXPORTER_BASIC_AUTH_PASSWORD}/g \
           > /etc/prometheus/prometheus.yml && \
-          exec prometheus --config.file=/etc/prometheus/prometheus.yml
+          exec prometheus --config.file=/etc/prometheus/prometheus.yml 
         '
 
   grafana-eitaa:
@@ -29,6 +30,9 @@ services:
     container_name: grafana-eitaa
     ports:
     - "3000:3000"
+    volumes:
+    - grafana-storage:/var/lib/grafana
 
 volumes:
   prometheus_data:
+  grafana-storage:
