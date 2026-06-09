@@ -60,11 +60,11 @@ envsubst '${LB_TYPE}' < /tmp/backend.conf.template > /etc/nginx/conf.d/default.c
 docker network create eitaa-network
 ```
 ### اجرا
-کافی است از پوشه اصلی اسکریپت `scripts/run.sh` را با پارامتر `run` فراخوانی کنیم
+کافی است از پوشه اصلی اسکریپت [scripts/restart.sh](scripts/restart.sh) را با پارامتر `run` فراخوانی کنیم
 
 ## اجرا با `docker compose`
 ### اجرا
-کافی است از پوشه اصلی اسکریپت `scripts/run.sh` را با پارامتر `compose` فراخوانی کنیم
+کافی است از پوشه اصلی اسکریپت [scripts/restart.sh](scripts/restart.sh) را با پارامتر `compose` فراخوانی کنیم
 
 
 ### تنظیم متغیر محیطی `LB_TYPE`
