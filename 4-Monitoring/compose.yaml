@@ -1,0 +1,34 @@
+include:
+  - '../3-RedisExporter/compose.yaml'
+
+services:
+  prometheus-eitaa:
+    image: prom/prometheus:v3.12.0-busybox
+    restart: unless-stopped
+    container_name: prometheus-eitaa
+    network_mode: "service:nginx-redis"
+    environment:
+      REDIS_EXPORTER_BASIC_AUTH_USERNAME: ${REDIS_EXPORTER_BASIC_AUTH_USERNAME}
+      REDIS_EXPORTER_BASIC_AUTH_PASSWORD: ${REDIS_EXPORTER_BASIC_AUTH_PASSWORD}
+    volumes:
+    - ./prometheus/prometheus.yml.template:/tmp/prometheus.yml.template:ro
+    entrypoint: |
+      sh -c '
+        cat /tmp/prometheus.yml.template | \
+          sed s/REDIS_EXPORTER_BASIC_AUTH_USERNAME/${REDIS_EXPORTER_BASIC_AUTH_USERNAME}/g | \
+          sed s/REDIS_EXPORTER_BASIC_AUTH_PASSWORD/${REDIS_EXPORTER_BASIC_AUTH_PASSWORD}/g \
+          > /etc/prometheus/prometheus.yml && \
+          exec prometheus --config.file=/etc/prometheus/prometheus.yml
+        '
+
+  grafana-eitaa:
+    image: grafana/grafana:12.4.4
+    depends_on:
+    - prometheus-eitaa
+    restart: unless-stopped
+    container_name: grafana-eitaa
+    ports:
+    - "3000:3000"
+
+volumes:
+  prometheus_data:

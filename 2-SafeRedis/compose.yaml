@@ -22,6 +22,7 @@ services:
     ports:
     - "9000:9000"
     - "9100:9121"   # Required for redis-exporter in Problem 3 to work correctly, See: https://stackoverflow.com/q/78051319
+    - "9090:9090"   # Required for prometheus in Problem 4 to work correctly
     healthcheck:
       test: ["CMD", "pidof", "nginx"]
       interval: 2s
