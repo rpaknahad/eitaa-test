@@ -1,0 +1,29 @@
+include:
+- ../2-SafeRedis/compose.yaml
+
+services:
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.86.0-alpine
+    restart: unless-stopped
+    container_name: redis-exporter
+    depends_on:
+    - redis-eitaa
+    - nginx-redis
+    env_file: .env
+    environment:
+      - REDIS_ADDR=${REDIS_ADDR}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+    - "9100:9121"
+    networks:
+    - eitaa-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget http://localhost:9121/health -q -O - || exit 1"]
+      interval: 2s
+      timeout: 3s
+      retries: 5
+
+networks:
+  eitaa-network:
+    driver: bridge
