@@ -10,7 +10,7 @@ method=${1:-compose}
 
 if [[ "$method" == "compose" ]]; then
     echo "Trying compose method..."
-    docker compose -f ${SCRIPT_DIR}/../compose.yaml up -d
+    docker compose -f ${SCRIPT_DIR}/../compose.yaml up -d --wait
 elif [[ "$method" == "run" ]]; then
     echo "Trying docker run method..."
     ${SCRIPT_DIR}/docker-run.sh
