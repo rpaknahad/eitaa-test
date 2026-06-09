@@ -17,11 +17,11 @@ apt update && apt install docker.io
 
 ## سرویس Nginx
 ### انتخاب نسخه
-نسخه 1.31.1-trixie انتخاب شد که جدیدترین نسخه پایدار تا این لحظه است
+نسخه `nginx:1.31.1-trixie` انتخاب شد که جدیدترین نسخه پایدار تا این لحظه است
 
 ### فایل پیکربندی 
 - افزودن دستور `resolver 127.0.0.11` به بلوک upstream به منظور استفاده از نام کانتینرهای بک‌اند
-- افزودن دو خط زیر به بلوک `server` قسمت `/ location` یه منظور افزودن یک Header جدید به پاسخ طبق صورت مسئله:
+- افزودن دو خط زیر به بلوک `server` قسمت `/ location` به منظور افزودن یک Header جدید به پاسخ طبق صورت مسئله:
 ```nginx
     add_header LB-TYPE "${LB_TYPE}" always;
     proxy_set_header LB-TYPE "${LB_TYPE}";
@@ -73,3 +73,10 @@ docker network create eitaa-network
 ## اجرا با `docker compose`
 ### اجرا
 کافی است از پوشه اصلی اسکریپت `scripts/run.sh` را با پارامتر `compose` فراخوانی کنیم
+
+
+### تنظیم متغیر محیطی `LB_TYPE`
+کافی است این متغیر را پیش از فراخوانی اسکریپت اجرا تنظیم نمایید. به‌عنوان نمونه:
+```bash
+LB_TYPE=NEW_NGINX scripts/run.sh compose
+```
