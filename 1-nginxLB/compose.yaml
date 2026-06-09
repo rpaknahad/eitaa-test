@@ -49,4 +49,3 @@ services:
 networks:
   eitaa-network:
     driver: bridge
-
