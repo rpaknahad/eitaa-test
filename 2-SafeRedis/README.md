@@ -5,10 +5,7 @@
 <br /><br />
 
 # نحوه اجرا
-کافی است دستور زیر را اجرا کنید:
-```bash
-docker compose up -d
-```
+کافی است از پوشه اصلی اسکریپت [scripts/restart.sh](scripts/restart.sh) را با پارامتر `compose` فراخوانی کنیم
 <br /><br />
 
 # توضیحات فنی
