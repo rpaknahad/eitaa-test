@@ -1,5 +1,6 @@
 services:
   backend1:
+    restart: unless-stopped
     container_name: backend1
     build:
       context: backend/
@@ -14,6 +15,7 @@ services:
       retries: 3
 
   backend2:
+    restart: unless-stopped
     container_name: backend2
     build:
       context: backend/
@@ -28,6 +30,7 @@ services:
       retries: 3
 
   nginx:
+    restart: unless-stopped
     depends_on:
     - backend1
     - backend2
