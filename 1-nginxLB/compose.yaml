@@ -42,7 +42,7 @@ services:
     networks:
     - eitaa-network
     environment:
-      LB_TYPE: ${LB_TYPE}
+      LB_TYPE: ${LB_TYPE:-NGINX}
     healthcheck:
       test: ["CMD-SHELL", "curl http://127.0.0.1:8080 | grep -q -E '1|2' || exit 1"]
       interval: 2s
