@@ -12,6 +12,7 @@ services:
       REDIS_EXPORTER_BASIC_AUTH_PASSWORD: ${REDIS_EXPORTER_BASIC_AUTH_PASSWORD}
     volumes:
     - ./prometheus/prometheus.yml.template:/tmp/prometheus.yml.template:ro
+    - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
     - prometheus_data:/prometheus
     entrypoint: |
       sh -c '

@@ -1,0 +1,39 @@
+groups:
+  - name: redis_alerts
+    interval: 5s   # هر ۳۰ ثانیه یکبار قوانین را ارزیابی کن
+    rules:
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis instance {{ $labels.instance }} is down"
+          description: "Redis at {{ $labels.instance }} has been unreachable for more than 1 minute."
+
+      - alert: RedisHighMemoryUsage
+        expr: (redis_memory_used_bytes / redis_memory_max_bytes) * 100 > 90
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis high memory usage on {{ $labels.instance }}"
+          description: "Redis memory usage is {{ $value | humanize }}% (above 90%) on {{ $labels.instance }}."
+
+      - alert: RedisHighConnections
+        expr: redis_connected_clients > 500
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis high number of connections on {{ $labels.instance }}"
+          description: "Redis has {{ $value }} client connections (above 5000) on {{ $labels.instance }}."
+
+      - alert: RedisExporterDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis exporter is down for job {{ $labels.job }}"
+          description: "Redis exporter (instance {{ $labels.instance }}) has been down for more than 1 minute."
