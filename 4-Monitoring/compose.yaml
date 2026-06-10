@@ -28,8 +28,7 @@ services:
     - prometheus-eitaa
     restart: unless-stopped
     container_name: grafana-eitaa
-    ports:
-    - "3000:3000"
+    network_mode: "service:nginx-redis"
     volumes:
     - grafana-storage:/var/lib/grafana
 
