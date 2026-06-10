@@ -7,6 +7,7 @@ services:
     volumes:
     - redis-data:/data
     - ./redis/redis-eitaa.conf:/etc/redis/redis.conf:ro
+    command: ["redis-server", "/etc/redis/redis.conf"]
     healthcheck:
       test: ["CMD", "redis-cli", "SET", "test:$(date +%s)", "success"]
       interval: 2s
@@ -21,8 +22,9 @@ services:
     - ./nginx/nginx-redis.conf:/etc/nginx/nginx.conf:ro
     ports:
     - "9000:9000"
-    - "9100:9121"   # Required for redis-exporter in Problem 3 to work correctly, See: https://stackoverflow.com/q/78051319
-    - "9090:9090"   # Required for prometheus in Problem 4 to work correctly
+    - "9100:9121"   # Required for redis-exporter in problem 3 to work correctly, See: https://stackoverflow.com/q/78051319
+    - "9090:9090"   # Required for prometheus in problem 4 to work correctly
+    - "3000:3000"   # Required for grafana in problem 4 to work correctly
     healthcheck:
       test: ["CMD", "pidof", "nginx"]
       interval: 2s
